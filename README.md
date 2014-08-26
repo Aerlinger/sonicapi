@@ -1,6 +1,6 @@
 # Sonicapi
 
-TODO: Write a gem description
+Ruby API for (zPlane's Sonic API)[https://www.sonicapi.com]
 
 ## Installation
 
