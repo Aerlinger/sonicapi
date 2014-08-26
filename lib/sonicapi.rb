@@ -21,5 +21,11 @@ module SonicApi
         f.adapter :net_http
       end
     end
+
+    def reset_connection!
+      @conn = nil  # To force skipping memoization when calling `connection` method
+
+      connection
+    end
   end
 end
