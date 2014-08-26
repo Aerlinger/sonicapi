@@ -4,15 +4,15 @@ module SonicApi
       analyze(file_id, "tempo", options)
     end
 
-    def analyze_melody(file_id, options = {})
+    def analyze_melody(file_id = nil, options = {})
       analyze(file_id, "melody", options)
     end
 
-    def analyze_loudness(file_id, options = {})
+    def analyze_loudness(file_id = nil, options = {})
       analyze(file_id, "loudness", options)
     end
 
-    def analyze_key(file_id, options = {})
+    def analyze_key(file_id = nil, options = {})
       analyze(file_id, "key", options)
     end
 
