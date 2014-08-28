@@ -16,3 +16,7 @@ test/tmp
 test/version_tmp
 tmp
 api_key
+*_processed
+melody_*.csv
+tempo_*.csv
+*.mp3
