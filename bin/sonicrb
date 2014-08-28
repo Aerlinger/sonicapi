@@ -13,28 +13,47 @@
 #
 
 require 'sonicapi'
+require 'fileutils'
 
 song_path = ARGV[0]
 access_id = ARGV[1]
 
-SonicApi.authenticate(access_id)
-file_id = SonicApi.upload(song_path)
-
-tempo_data  = SonicApi.analyze_tempo file_id
-melody_data = SonicApi.analyze_melody file_id
-
-tempo_csv = SonicApi.melody_to_csv(tempo_data)
-melody_csv = SonicApi.melody_to_csv(melody_data)
-
-filename = url[/\w+\.mp3/]
+filename = song_path[/\w+\.mp3/]
 folder_name = filename + "_processed"
 
 if Dir.exists?(folder_name)
-  # Todo: Handle folder name collision
-  puts "Folder already exists"
-else
-  Dir.mkdir(folder_name)
+  puts "Folder #{folder_name} already exists"
 
-  SonicApi.write_csv("#{folder_name}/#{filename}_tempo.csv", tempo_csv)
-  SonicApi.write_csv("#{folder_name}/#{filename}_melody.csv", melody_csv)
+  exit(1)
 end
+
+puts "Processing file: #{song_path}..."
+
+SonicApi.authenticate(access_id)
+file_id = SonicApi.upload(song_path)
+
+if file_id
+  puts "Upload successful... File id is #{file_id}"
+else
+  puts "Couldn't upload #{song_path}. Check Access ID"
+  exit(1)
+end
+
+print "Analyzing tempo... "
+tempo_data  = SonicApi.analyze_tempo file_id
+puts "Done."
+
+print "Analyzing melody..."
+melody_data = SonicApi.analyze_melody file_id
+puts "Done"
+
+print "Parsing JSON and converting to CSV..."
+tempo_csv = SonicApi.tempo_to_csv(tempo_data)
+melody_csv = SonicApi.melody_to_csv(melody_data)
+puts "Done"
+
+
+Dir.mkdir(folder_name)
+
+SonicApi.write_csv("#{folder_name}/#{filename}_tempo.csv", tempo_csv)
+SonicApi.write_csv("#{folder_name}/#{filename}_melody.csv", melody_csv)
