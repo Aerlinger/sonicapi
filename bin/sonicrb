@@ -18,10 +18,13 @@ song_path = ARGV[0]
 access_id = ARGV[1]
 
 SonicApi.authenticate(access_id)
-SonicApi.upload(song_path)
+file_id = SonicApi.upload(song_path)
 
-tempo_data  = SonicApi.analyze_tempo
-melody_data = SonicApi.analyze_melody
+tempo_data  = SonicApi.analyze_tempo file_id
+melody_data = SonicApi.analyze_melody file_id
+
+tempo_csv = SonicApi.melody_to_csv(tempo_data)
+melody_csv = SonicApi.melody_to_csv(melody_data)
 
 filename = url[/\w+\.mp3/]
 folder_name = filename + "_processed"
@@ -32,7 +35,6 @@ if Dir.exists?(folder_name)
 else
   Dir.mkdir(folder_name)
 
-  File.open(folder_name + "/" + "")
-  tempo_data.to_json
+  SonicApi.write_csv("#{folder_name}/#{filename}_tempo.csv", tempo_csv)
+  SonicApi.write_csv("#{folder_name}/#{filename}_melody.csv", melody_csv)
 end
-
