@@ -21,7 +21,7 @@ module SonicApi
     def analyze(file_id = nil, type = "tempo", options = {})
       file_id ||= @last_file_id
 
-      response = connection.post("/analyze/#{type}", access_id: ACCESS_ID, format: 'json', input_file: file_id)
+      response = connection.post("/analyze/#{type}", access_id: @access_id, format: 'json', input_file: file_id)
 
       response_json = JSON.parse(response.body)
 

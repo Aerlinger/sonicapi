@@ -1,17 +1,25 @@
+require 'faraday'
+require 'json'
+
 require "sonicapi/version"
 require "sonicapi/analyze"
 require "sonicapi/file"
 require "sonicapi/process"
+require "sonicapi/conversion"
 
 module SonicApi
   extend SonicApi::Analyze
   extend SonicApi::File
   extend SonicApi::Process
+  extend SonicApi::Conversion
 
   class << self
-    def authenticate(access_key)
-      @access_key = access_key
+    attr_reader :access_id
+
+    def authenticate(access_id)
+      @access_id = access_id
       @uploads = {}
+      connection
     end
 
     def connection
