@@ -31,10 +31,27 @@ describe "Live API calls" do
     it "can analyze loudness"
 
     it "can analyze key"
+
+    describe "CSV conversion" do
+      it "converts tempo JSON to CSV" do
+        tempo_response = SonicApi.analyze_tempo(file_id)
+        tempo_csv = SonicApi.tempo_to_csv(tempo_response)
+
+        SonicApi.write_csv("examples/tempo_#{file_id}.csv", tempo_csv)
+        expect(SonicApi.tempo_to_csv(tempo_response)).to eq("")
+      end
+
+      it "converts melody JSON to CSV" do
+        melody_response = SonicApi.analyze_melody(file_id)
+        melody_csv = SonicApi.melody_to_csv(melody_response)
+
+        SonicApi.write_csv("examples/melody_#{file_id}.csv", melody_csv)
+        expect(SonicApi.melody_to_csv(melody_response)).to eq ""
+      end
+    end
   end
 end
 
 describe "Conversion" do
 
 end
-
